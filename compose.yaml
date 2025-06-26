@@ -16,6 +16,11 @@ services:
     build:
       context: .
     container_name: spring-app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/springboot_students
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=Melon@123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - '8080:8080'
     networks:
