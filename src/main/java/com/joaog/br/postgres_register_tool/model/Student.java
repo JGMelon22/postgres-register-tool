@@ -3,7 +3,7 @@ package com.joaog.br.postgres_register_tool.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="students", indexes = @Index(name = "idx_student_id", columnList = "id"))
+@Table(name = "students", indexes = @Index(name = "idx_student_id", columnList = "id"))
 public class Student {
 
     @Id
@@ -11,21 +11,25 @@ public class Student {
     @Column(name = "id")
     private int id;
 
-    @Column(name="name", columnDefinition = "VARCHAR(100)", nullable = false)
+    @Column(name = "name", columnDefinition = "VARCHAR(100)", nullable = false)
     private String name;
 
-    @Column(name="course", columnDefinition = "VARCHAR(100)", nullable = false)
+    @Column(name = "email", columnDefinition = "VARCHAR(100)", nullable = false)
+    String email;
+
+    @Column(name = "course", columnDefinition = "VARCHAR(100)", nullable = false)
     private String course;
 
-    @Column(name="gender", columnDefinition = "VARCHAR(6)", nullable = false)
+    @Column(name = "gender", columnDefinition = "VARCHAR(6)", nullable = false)
     private String gender;
 
     public Student() {
     }
 
-    public Student(int id, String name, String course, String gender) {
+    public Student(int id, String name, String email, String course, String gender) {
         this.id = id;
         this.name = name;
+        this.email = email;
         this.course = course;
         this.gender = gender;
     }
@@ -44,6 +48,14 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCourse() {
