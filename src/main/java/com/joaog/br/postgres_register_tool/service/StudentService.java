@@ -23,7 +23,7 @@ public class StudentService {
 
     public ArrayList<StudentResponse> getAllStudents() {
         Iterable<Student> students = studentRepository.findAll();
-        return studentMapper.toResponseList(students);
+        return studentMapper.toResponse(students);
     }
 
     public Optional<StudentResponse> getStudentById(int id) {

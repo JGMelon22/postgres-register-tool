@@ -15,7 +15,7 @@ public interface StudentMapper {
 
     StudentResponse toResponse(Student student);
 
-    ArrayList<StudentResponse> toResponseList(Iterable<Student> students);
+    ArrayList<StudentResponse> toResponse(Iterable<Student> students);
 
     void applyUpdate(StudentRequest studentRequest, @MappingTarget Student student);
 }
