@@ -39,14 +39,17 @@ public class StudentService {
         return studentMapper.toResponse(savedStudent);
     }
 
-    public Optional<Student> updateStudent(int id, StudentRequest studentRequest) {
+    public Optional<StudentResponse> updateStudent(int id, StudentRequest studentRequest) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
 
         studentMapper.applyUpdate(studentRequest, student);
-        studentRepository.save(student);
 
-        return Optional.of(student);
+        Student savedStudent = studentRepository.save(student);
+
+        StudentResponse response = studentMapper.toResponse(savedStudent);
+
+        return Optional.of(response);
     }
 
     public void deleteStudent(int id) {
