@@ -15,7 +15,7 @@ public class Student {
     private String name;
 
     @Column(name = "email", columnDefinition = "VARCHAR(100)", nullable = false)
-    String email;
+    private String email;
 
     @Column(name = "course", columnDefinition = "VARCHAR(100)", nullable = false)
     private String course;
