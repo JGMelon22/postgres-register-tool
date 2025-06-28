@@ -2,6 +2,7 @@ package com.joaog.br.postgres_register_tool.service;
 
 import com.joaog.br.postgres_register_tool.dto.StudentRequest;
 import com.joaog.br.postgres_register_tool.dto.StudentResponse;
+import com.joaog.br.postgres_register_tool.exception.StudentNotFoundException;
 import com.joaog.br.postgres_register_tool.mapper.StudentMapper;
 import com.joaog.br.postgres_register_tool.model.Student;
 import com.joaog.br.postgres_register_tool.repository.StudentRepository;
@@ -40,7 +41,7 @@ public class StudentService {
 
     public Optional<Student> updateStudent(int id, StudentRequest studentRequest) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(String.format("Student with id %d not found", id)));
+                .orElseThrow(() -> new StudentNotFoundException(id));
 
         studentMapper.applyUpdate(studentRequest, student);
         studentRepository.save(student);
@@ -50,7 +51,7 @@ public class StudentService {
 
     public void deleteStudent(int id) {
         if (!studentRepository.existsById(id))
-            throw new RuntimeException(String.format("Student with id %d not found", id));
+            throw new StudentNotFoundException(id);
 
         studentRepository.deleteById(id);
     }
