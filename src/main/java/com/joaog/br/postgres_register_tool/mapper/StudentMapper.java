@@ -6,12 +6,16 @@ import com.joaog.br.postgres_register_tool.model.Student;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.util.ArrayList;
+
 @Mapper(componentModel = "spring")
 public interface StudentMapper {
 
     Student toEntity(StudentRequest student);
 
     StudentResponse toResponse(Student student);
+
+    ArrayList<StudentResponse> toResponseList(Iterable<Student> students);
 
     void applyUpdate(StudentRequest studentRequest, @MappingTarget Student student);
 }
