@@ -6,11 +6,10 @@ import com.joaog.br.postgres_register_tool.exception.StudentNotFoundException;
 import com.joaog.br.postgres_register_tool.mapper.StudentMapper;
 import com.joaog.br.postgres_register_tool.model.Student;
 import com.joaog.br.postgres_register_tool.repository.StudentRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -22,14 +21,16 @@ public class StudentService {
         this.studentMapper = studentMapper;
     }
 
-    public ArrayList<StudentResponse> getAllStudents() {
+    public List<StudentResponse> getAllStudents() {
         Iterable<Student> students = studentRepository.findAll();
         return studentMapper.toResponse(students);
     }
 
-    public Optional<StudentResponse> getStudentById(int id) {
-        return studentRepository.findById(id)
-                .map(studentMapper::toResponse);
+    public StudentResponse getStudentById(int id) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+
+        return studentMapper.toResponse(student);
     }
 
     public StudentResponse saveProduct(StudentRequest studentRequest) {
@@ -39,7 +40,7 @@ public class StudentService {
         return studentMapper.toResponse(savedStudent);
     }
 
-    public Optional<StudentResponse> updateStudent(int id, StudentRequest studentRequest) {
+    public StudentResponse updateStudent(int id, StudentRequest studentRequest) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
 
@@ -47,9 +48,7 @@ public class StudentService {
 
         Student savedStudent = studentRepository.save(student);
 
-        StudentResponse response = studentMapper.toResponse(savedStudent);
-
-        return Optional.of(response);
+        return studentMapper.toResponse(savedStudent);
     }
 
     public void deleteStudent(int id) {
