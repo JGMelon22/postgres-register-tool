@@ -6,10 +6,12 @@ import com.joaog.br.postgres_register_tool.exception.StudentNotFoundException;
 import com.joaog.br.postgres_register_tool.mapper.StudentMapper;
 import com.joaog.br.postgres_register_tool.model.Student;
 import com.joaog.br.postgres_register_tool.repository.StudentRepository;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class StudentService {
@@ -21,26 +23,30 @@ public class StudentService {
         this.studentMapper = studentMapper;
     }
 
-    public List<StudentResponse> getAllStudents() {
+    @Async
+    public CompletableFuture<List<StudentResponse>> getAllStudents() {
         Iterable<Student> students = studentRepository.findAll();
-        return studentMapper.toResponse(students);
+        return CompletableFuture.completedFuture(studentMapper.toResponse(students));
     }
 
-    public StudentResponse getStudentById(int id) {
+    @Async
+    public CompletableFuture<StudentResponse> getStudentById(int id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
 
-        return studentMapper.toResponse(student);
+        return CompletableFuture.completedFuture(studentMapper.toResponse(student));
     }
 
-    public StudentResponse saveProduct(StudentRequest studentRequest) {
+    @Async
+    public CompletableFuture<StudentResponse> saveStudent(StudentRequest studentRequest) {
         Student student = studentMapper.toEntity(studentRequest);
         Student savedStudent = studentRepository.save(student);
 
-        return studentMapper.toResponse(savedStudent);
+        return CompletableFuture.completedFuture(studentMapper.toResponse(savedStudent));
     }
 
-    public StudentResponse updateStudent(int id, StudentRequest studentRequest) {
+    @Async
+    public CompletableFuture<StudentResponse> updateStudent(int id, StudentRequest studentRequest) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
 
@@ -48,14 +54,14 @@ public class StudentService {
 
         Student savedStudent = studentRepository.save(student);
 
-        return studentMapper.toResponse(savedStudent);
+        return CompletableFuture.completedFuture(studentMapper.toResponse(savedStudent));
     }
 
+    @Async
     public void deleteStudent(int id) {
         if (!studentRepository.existsById(id))
             throw new StudentNotFoundException(id);
 
         studentRepository.deleteById(id);
     }
-
 }
