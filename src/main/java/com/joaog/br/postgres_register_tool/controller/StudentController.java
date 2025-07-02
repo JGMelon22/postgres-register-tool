@@ -37,7 +37,7 @@ public class StudentController {
 
     @PostMapping
     public StudentResponse createStudent(@RequestBody @Valid StudentRequest studentRequest) {
-        return studentService.saveProduct(studentRequest);
+        return studentService.saveStudent(studentRequest);
     }
 
     @PutMapping("/{id}")
